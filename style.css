@@ -1,0 +1,283 @@
+body {
+  width: 100%;
+  display: flex;
+  background-color: #3f787d;
+  justify-content: center;
+  height: 100vh;
+}
+
+.main-elements-control {
+  display: flex;
+  width: 100%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.topblock {
+  display: flex;
+  width: 80%;
+  flex-direction: column;
+  align-items: center;
+}
+
+.task-container {
+  margin: 10px 0;
+  border-radius: 10px;
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: space-between;
+}
+
+#content-page {
+  width: 80%;
+  display: flex;
+  justify-content: center;
+  margin-top: 20px;
+  flex-direction: column;
+  align-items: center;
+}
+
+.headblock {
+  margin: 25px 0;
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.block {
+  width: 60%;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  align-items: flex-end;
+}
+
+#date-for-task {
+  border: none;
+  outline: none;
+  border-radius: 5px;
+  height: 20px;
+}
+
+h5 {
+  margin: 5px 0;
+}
+
+#add-task1 {
+  width: 80%;
+  border-radius: 5px;
+  outline: none;
+  height: 25px;
+  border: none;
+}
+
+#add-task2 {
+  width: 80%;
+  border-radius: 5px;
+  outline: none;
+  height: 25px;
+  border: none;
+}
+
+button {
+  color: #e7e5df;
+  background-color: #004643;
+  border-radius: 5px;
+  height: 27px;
+  border: none;
+  outline: none;
+}
+
+.blockName {
+  width: 50%;
+}
+
+.BlockMoney {
+  width: 35%;
+}
+
+.BlockCalc {
+  display: flex;
+  width: 60%;
+  align-items: center;
+  justify-content: flex-end;
+}
+
+input {
+  background-color: #d6cfbb;
+}
+
+img {
+  height: 40px;
+  width: 40px;
+}
+
+.text {
+  white-space: nowrap;
+  margin: 10px;
+  overflow: hidden;
+  width: 50%;
+  text-overflow: ellipsis;
+}
+
+.text:hover {
+  text-overflow: clip;
+  overflow: visible;
+  white-space: pre-wrap;
+}
+
+.date {
+  width: 20%;
+}
+
+.summ {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  width: 15%;
+}
+
+.shop {
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
+.shop+img {
+  height: 25px;
+  width: 25px;
+}
+
+.shop+img+img {
+  height: 25px;
+  width: 25px;
+}
+
+.dateNew {
+  width: 19%;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
+.dateNew+img {
+  height: 25px;
+  width: 25px;
+}
+
+.dateNew+img+img {
+  height: 25px;
+  width: 25px;
+}
+
+
+.cost {
+  margin-right: 10px;
+  width: 15%;
+  outline: none;
+  border: none;
+  border-radius: 5px;
+  margin-left: 5px;
+}
+
+.cost+img {
+  height: 25px;
+  width: 25px;
+}
+
+.cost+img+img {
+  height: 25px;
+  width: 25px;
+}
+
+.imgDiv {
+  display: flex;
+  align-items: center;
+  flex-direction: row;
+}
+
+
+
+@media (max-width: 900px) {
+  .headblock {
+    flex-direction: column;
+  }
+
+  h5 {
+    font-size: 10px;
+  }
+  img {
+    width: 25px;
+    height: 25px;
+  }
+  .text {
+    width: 100%;
+    margin: 10px 0;
+    text-align: center;
+  }
+  .date {
+    text-align: center;
+    width: 100%;
+  }
+  .summ {
+    text-align: center;
+    width: 100%;
+  }
+  .task-container {
+    flex-direction: column;
+  }
+}
+
+@media (max-width: 600px) {
+  h1 {
+    font-size: 1.2em;
+  }
+
+  #add-task1 {
+    width: 100%;
+  }
+
+  #add-task2 {
+    width: 100%;
+  }
+
+  .block {
+    align-items: center;
+    flex-direction: column;
+  }
+
+  .BlockMoney {
+    width: 100%;
+  }
+
+  .blockName {
+    width: 100%;
+  }
+
+  button {
+    margin-top: 10px;
+  }
+  .BlockCalc{
+    justify-content: center;
+  }
+}
+
+@media (max-width: 400px) {
+  h1 {
+    font-size: 1.0em;
+  }
+
+  .blockName {
+    width: 100%;
+  }
+
+  .BlockMoney {
+    width: 100%;
+  }
+}

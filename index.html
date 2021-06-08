@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <title>Calculation of expenses</title>
+  <script src="script.js"></script>
+  <script src="https://cdn.jsdelivr.net/lodash/4.10.0/lodash.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/underscore@1.13.1/underscore-umd-min.js
+  "></script>
+  <link rel="stylesheet" type="text/css" href="style.css">
+  <meta name="viewport" charset="utf-8"
+    content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+</head>
+
+<body>
+  <div class="main-elements-control">
+    <div class="topblock">
+      <div class=headblock>
+        <h1>Учет моих расходов</h1>
+        <input type="date" min="2007-01-01" max="2023-12-31" id="date-for-task">
+      </div>
+      <div class="block">
+        <div class="blockName">
+          <h5>Куда было потрачено:</h5>
+          <input type="text" placeholder="Куда было потрачено" id="add-task1">
+        </div>
+        <div class="BlockMoney">
+          <h5>Сколько было потрачено:</h5>
+          <input type="number" placeholder="Сколько было потрачено" id="add-task2">
+        </div>
+        <button onclick="onClickButton()">Добавить</button>
+      </div>
+      <div class="BlockCalc">
+        <p id="calc"></p>
+      </div>
+    </div>
+   
+
+    <div id="content-page"></div>
+  </div>
+</body>
+
+</html>
