@@ -4,13 +4,11 @@ let input1 = null;
 let input2 = null;
 let input3 = null;
 let valueNumber = 0;
-let valueDate = '';
 let sum = 0;
+let valueDate = '';
 indexEdit = null;
 
-
-
-window.onload = init = () => {
+window.onload = async function init() {
   input1 = document.getElementById('add-task1');
   input1.addEventListener('change', updateValue);
   input2 = document.getElementById('add-task2');
@@ -20,21 +18,39 @@ window.onload = init = () => {
   input1.addEventListener('keyup', pushAll);
   input2.addEventListener('keyup', pushAll);
   input3.addEventListener('keyup', pushAll);
-  input1.addEventListener('keyup', closeEl);
-  input2.addEventListener('keyup', closeEl);
-  input3.addEventListener('keyup', closeEl);
+
+  SumResult = document.getElementById('calc');
+
+  const response = await fetch('http://localhost:4000/allTasks', {
+    method: 'GET'
+  });
+  let result = await response.json();
+   allTasks = result.data;
+   console.log(allTasks);
+  render()
 }
 
-onClickButton = () => {
+onClickButton = async () => {
   if (valueInput.trim() && valueNumber && valueDate) {
-    allTasks.push({
-      text: valueInput.trim(),
-      date: valueDate,
-      sum: valueNumber,
-      isEditingText: false,
-      isEditingDate: false,
-      isEditingSum: false
-    });
+
+     const resp = await fetch('http://localhost:4000/createTask', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json;charset=utf-8',
+        'Access-Control-Allow-Origin': '*'
+      },
+      body: JSON.stringify({
+        text: valueInput.trim(),
+        date: valueDate,
+        sum: valueNumber,
+        isEditingText: false,
+        isEditingDate: false,
+        isEditingSum: false
+      })
+    })
+    let result = await resp.json();
+    allTasks.push(result.data);
+
     valueInput = '';
     valueDate = '';
     input1.value = '';
@@ -57,35 +73,18 @@ const updateValue2 = (event) => {
 
 const pushAll = (event) => {
   if (event.keyCode === 13) {
-    return onClickButton();
+    onClickButton();
   };
 };
 
-closeEl = (event) => {
-  if (event.keyCode === 27) {
-    return onClickMiniClose(index);
-  };
-}
-
-calculation = (value) => {
-  let newSum = 0;
-  newSum = Number(value);
-  sum = sum + newSum;
-  return sum;
-}
-
-
 render = () => {
-  sum = 0;
-
-  const SumResult = document.getElementById('calc');
+  let totalCount = 0;
 
   const content = document.getElementById('content-page')
   while (content.firstChild) {
     content.removeChild(content.firstChild);
   }
   allTasks.map((item, index) => {
-
     const container = document.createElement('div');
     container.id = `task-${index}`;
     container.className = 'task-container';
@@ -259,47 +258,63 @@ render = () => {
       container.appendChild(newContainer);
     }
 
-     content.appendChild(container);
+    content.appendChild(container);
 
-    let resultSum = calculation(item.sum);
-    SumResult.innerText = `Итого ${resultSum} р.`
-
+    totalCount += Number(item.sum);
   });
+  SumResult.innerText = `Итого: ${totalCount} р.`;
 
 };
 
-// Основные кнопки
 onClickEdit = (index) => {
   indexEdit = index;
   render();
 };
 
-onClickDone = (val, val1, val2, index) => {
+onClickDone = async (val, val1, val2, index) => {
   allTasks[index].text = val;
   allTasks[index].date = val1;
   allTasks[index].sum = val2;
-
   indexEdit = null;
-  render()
+  const response = await fetch('http://localhost:4000/changeTask', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: JSON.stringify({
+      text: val,
+      date: val1,
+      sum: val2,
+      isEditingText: false,
+      isEditingDate: false,
+      isEditingSum: false,
+      _id: allTasks[index]._id
+    })
+  });  
+  render();
 };
 
 
-onClickClose = (index) => {
+onClickClose = async = (index) => {
   indexEdit = index;
   render();
-}
+};
 
-onClickDel = (index) => {
-  allTasks.splice(index, 1);
+onClickDel = async (index) => {
+  const response = await fetch(`http://localhost:4000/deleteTask?_id=${allTasks[index]._id}`, {
+    method: 'DELETE'
+  });
+  let result = await response.json();
+  allTasks = result.data;
   render();
-}
+};
 
-// Доп кнопки
 onClickShops = (index) => {
   allTasks[index].isEditingText = true;
 
   render();
-}
+};
 
 onClickDate = (index) => {
   allTasks[index].isEditingDate = true;
@@ -309,39 +324,82 @@ onClickDate = (index) => {
 onClicSumm = (index) => {
   allTasks[index].isEditingSum = true;
   render();
-}
+};
 
-onKeyShop = (newText, index) => {
+onKeyShop = async (newText, index) => {
   allTasks[index].text = newText;
   allTasks[index].isEditingText = false;
-  render()
-}
+  const response = await fetch('http://localhost:4000/changeTask', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: JSON.stringify({
+      text: newText,
+      isEditingText: false,
+      _id: allTasks[index]._id
+    })
+  });
 
-onKeyDate = (newD, index) => {
+  let result = await response.json();
+  allTasks = result.data;
+  render();
+};
+
+onKeyDate = async (newD, index) => {
   allTasks[index].date = newD;
   allTasks[index].isEditingDate = false;
-  render()
-}
+  const response = await fetch('http://localhost:4000/changeTask', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: JSON.stringify({
+      date: newD,
+      isEditingDate: false,
+      _id: allTasks[index]._id
+    })
+  });
 
-onKeySumm = (newSum, index) => {
+  let result = await response.json();
+  allTasks = result.data;
+  render();
+};
+
+onKeySumm = async (newSum, index) => {
   allTasks[index].sum = newSum;
   allTasks[index].isEditingSum = false;
-  render()
-}
+  const response = await fetch('http://localhost:4000/changeTask', {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json;charset=utf-8',
+      'Access-Control-Allow-Origin': '*'
+    },
+    body: JSON.stringify({
+      sum: newSum,
+      isEditingSum: false,
+      _id: allTasks[index]._id
+    })
+  });
 
-
+  let result = await response.json();
+  allTasks = result.data;
+  render();
+};
 
 onClickMiniCloseT = (index) => {
   allTasks[index].isEditingText = false;
   render();
-}
+};
 
 onClickMiniCloseD = (index) => {
   allTasks[index].isEditingDate = false;
   render();
-}
+};
 
 onClickMiniCloseC = (index) => {
   allTasks[index].isEditingSum = false;
   render();
-}
+};
