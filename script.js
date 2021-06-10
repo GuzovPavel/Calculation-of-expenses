@@ -7,6 +7,9 @@ let valueNumber = 0;
 let sum = 0;
 let valueDate = '';
 indexEdit = null;
+let isEditingText = null;
+let isEditingDate = null;
+let isEditingSum = null;
 
 window.onload = async function init() {
   input1 = document.getElementById('add-task1');
@@ -43,9 +46,6 @@ onClickButton = async () => {
         text: valueInput.trim(),
         date: valueDate,
         sum: valueNumber,
-        isEditingText: false,
-        isEditingDate: false,
-        isEditingSum: false
       })
     })
     let result = await resp.json();
@@ -57,7 +57,6 @@ onClickButton = async () => {
     input2.value = '';
     input3.value = '';
   };
-
   render();
 };
 
@@ -127,7 +126,7 @@ render = () => {
 
 
     } else {
-      if (!allTasks[index].isEditingText) {
+      if (isEditingText !== index) {
         const text = document.createElement('p');
         text.innerText = `${index + 1 }) Магазин "${item.text}"`;
         text.className = 'text';
@@ -164,7 +163,8 @@ render = () => {
         container.appendChild(imgClose);
       };
 
-      if (!allTasks[index].isEditingDate) {
+
+      if (isEditingDate !== index) {
         const purchaseDate = document.createElement('p');
         purchaseDate.innerText = item.date;
         purchaseDate.className = 'date';
@@ -201,7 +201,7 @@ render = () => {
 
       };
 
-      if (!allTasks[index].isEditingSum) {
+      if (isEditingSum !== index) {
         const summ = document.createElement('p');
         summ.innerText = `${item.sum} р.`;
         summ.className = 'summ';
@@ -286,9 +286,6 @@ onClickDone = async (val, val1, val2, index) => {
       text: val,
       date: val1,
       sum: val2,
-      isEditingText: false,
-      isEditingDate: false,
-      isEditingSum: false,
       _id: allTasks[index]._id
     })
   });  
@@ -296,7 +293,7 @@ onClickDone = async (val, val1, val2, index) => {
 };
 
 
-onClickClose = async = (index) => {
+onClickClose = (index) => {
   indexEdit = index;
   render();
 };
@@ -311,24 +308,23 @@ onClickDel = async (index) => {
 };
 
 onClickShops = (index) => {
-  allTasks[index].isEditingText = true;
-
+  isEditingText = index;
   render();
 };
 
 onClickDate = (index) => {
-  allTasks[index].isEditingDate = true;
+  isEditingDate = index;
   render();
 }
 
 onClicSumm = (index) => {
-  allTasks[index].isEditingSum = true;
+  isEditingSum = index;
   render();
 };
 
 onKeyShop = async (newText, index) => {
   allTasks[index].text = newText;
-  allTasks[index].isEditingText = false;
+  isEditingText = null;
   const response = await fetch('http://localhost:4000/changeTask', {
     method: 'PATCH',
     headers: {
@@ -337,7 +333,6 @@ onKeyShop = async (newText, index) => {
     },
     body: JSON.stringify({
       text: newText,
-      isEditingText: false,
       _id: allTasks[index]._id
     })
   });
@@ -349,7 +344,7 @@ onKeyShop = async (newText, index) => {
 
 onKeyDate = async (newD, index) => {
   allTasks[index].date = newD;
-  allTasks[index].isEditingDate = false;
+  isEditingDate = null;
   const response = await fetch('http://localhost:4000/changeTask', {
     method: 'PATCH',
     headers: {
@@ -358,7 +353,6 @@ onKeyDate = async (newD, index) => {
     },
     body: JSON.stringify({
       date: newD,
-      isEditingDate: false,
       _id: allTasks[index]._id
     })
   });
@@ -370,7 +364,7 @@ onKeyDate = async (newD, index) => {
 
 onKeySumm = async (newSum, index) => {
   allTasks[index].sum = newSum;
-  allTasks[index].isEditingSum = false;
+  isEditingSum = null;
   const response = await fetch('http://localhost:4000/changeTask', {
     method: 'PATCH',
     headers: {
@@ -379,27 +373,26 @@ onKeySumm = async (newSum, index) => {
     },
     body: JSON.stringify({
       sum: newSum,
-      isEditingSum: false,
       _id: allTasks[index]._id
     })
   });
-
   let result = await response.json();
   allTasks = result.data;
   render();
 };
 
+
 onClickMiniCloseT = (index) => {
-  allTasks[index].isEditingText = false;
+  isEditingText = null;
   render();
 };
 
 onClickMiniCloseD = (index) => {
-  allTasks[index].isEditingDate = false;
+  isEditingDate = null;
   render();
 };
 
 onClickMiniCloseC = (index) => {
-  allTasks[index].isEditingSum = false;
+  isEditingSum = null;
   render();
 };
