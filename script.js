@@ -28,15 +28,14 @@ window.onload = async function init() {
     method: 'GET'
   });
   let result = await response.json();
-   allTasks = result.data;
-   console.log(allTasks);
+  allTasks = result.data;
   render()
 }
 
 onClickButton = async () => {
   if (valueInput.trim() && valueNumber && valueDate) {
 
-     const resp = await fetch('http://localhost:4000/createTask', {
+    const resp = await fetch('http://localhost:4000/createTask', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json;charset=utf-8',
@@ -271,10 +270,10 @@ onClickEdit = (index) => {
   render();
 };
 
-onClickDone = async (val, val1, val2, index) => {
-  allTasks[index].text = val;
-  allTasks[index].date = val1;
-  allTasks[index].sum = val2;
+onClickDone = async (newText, newDate, newSum, index) => {
+  allTasks[index].text = newText;
+  allTasks[index].date = newDate;
+  allTasks[index].sum = newSum;
   indexEdit = null;
   const response = await fetch('http://localhost:4000/changeTask', {
     method: 'PATCH',
@@ -283,12 +282,12 @@ onClickDone = async (val, val1, val2, index) => {
       'Access-Control-Allow-Origin': '*'
     },
     body: JSON.stringify({
-      text: val,
-      date: val1,
-      sum: val2,
+      text: newText,
+      date: newDate, 
+      sum: newSum,
       _id: allTasks[index]._id
     })
-  });  
+  });
   render();
 };
 
